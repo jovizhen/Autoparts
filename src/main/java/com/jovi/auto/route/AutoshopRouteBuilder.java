@@ -1,17 +1,16 @@
 package com.jovi.auto.route;
 
 
+import javax.xml.bind.JAXBContext;
+
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
-import org.apache.camel.dataformat.xstream.XStreamDataFormat;
 
 import com.jovi.auto.model.Order;
-import com.jovi.auto.processor.CSVOrderProcessor;
-import com.jovi.auto.processor.JsonOrderProcessor;
 import com.jovi.auto.processor.XMLOrderProcessor;
 
 public class AutoshopRouteBuilder extends RouteBuilder
@@ -19,7 +18,8 @@ public class AutoshopRouteBuilder extends RouteBuilder
 	@Override
 	public void configure() throws Exception
 	{
-		JaxbDataFormat jaxb = new JaxbDataFormat();
+		JAXBContext jaxbContext = JAXBContext.newInstance(Order.class);
+		JaxbDataFormat jaxb = new JaxbDataFormat(jaxbContext);
 		
 		JacksonDataFormat jackson = new JacksonDataFormat();
 		jackson.setUnmarshalType(Order.class);
